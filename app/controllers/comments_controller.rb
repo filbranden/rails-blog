@@ -1,12 +1,13 @@
 class CommentsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
-    if @post.comments.create(comment_params)
+    @comment = @post.comments.build(comment_params)
+    if @comment.save
       redirect_to @post,
         notice: 'Comment was successfully created.'
     else
       redirect_to @post,
-        alert: 'Error creating comment.'
+        alert: 'Error creating comment. ' + @comment.errors.full_messages.to_sentence
     end
   end
 
